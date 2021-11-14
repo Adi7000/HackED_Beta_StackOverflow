@@ -1,6 +1,7 @@
 import tkinter as tk
 from PIL import ImageTk, Image
 from math import sqrt
+import os
 from greedy import *
 from copy import deepcopy
 
@@ -80,13 +81,12 @@ dictionary_of_cities_by_locations = {
 
 
 def airport_selected(airport, temp_canvas, r=7):
-    addAirports["state"] = tk.DISABLED
-
+    global visited_airports
     if len(desired_airports) == 0:  # If it is the starting point, dot will be green
         color = 'green'
     else:
-        if airport[0] == visited_airports[-1]:  # Otherwise, dot will be red
-            pass
+        if airport[0] in visited_airports:  # Otherwise, dot will be red
+            return
         color = 'red'
 
     coords = airport[3]
@@ -101,6 +101,8 @@ def airport_selected(airport, temp_canvas, r=7):
 
 
 def add_airports():
+    addAirports["state"] = tk.DISABLED  # Disables the button that gets the user here
+
     # Adds a button for every single airport in the dictionary
     airport_root = tk.Tk()
     airport_root.config(bg="#ADD8E6")
@@ -126,7 +128,7 @@ def algorithm_select(old_root):
 
     old_root.destroy()
     new_root = tk.Tk()
-    new_root.geometry("700x700")
+    new_root.geometry("700x850")
     new_root.config(bg='#ADD8E6')
     new_root.wm_title('Select An Algorithm')
 
@@ -145,10 +147,10 @@ def algorithm_select(old_root):
     global btn_list
     btn_list = [greedy_btn, sectional_btn, compare_btn]
 
-    pass
+    return
 
 
-def draw_line(old_root, points, canvas, algorithm_type, color='red', thickness="5", quit_button=False):
+def draw_line(old_root, points, canvas, algorithm_type, color='red', thickness="5", create_btns=False):
     remove_buttons(btn_list)
     distance = 0
     for i in range(len(points)):
@@ -163,27 +165,28 @@ def draw_line(old_root, points, canvas, algorithm_type, color='red', thickness="
     for key in points:
         ordered_airports.append(dictionary_of_cities_by_locations[str(key)])
 
-    airports_visited_label = tk.Label(old_root, text="Using the " + algorithm_type +
+    airports_visited_label = tk.Label(old_root, text="Using the " + algorithm_type + ' (' + color + ')'
                                                      " algorithm your flight path is:\n" +
                                                      " to ".join(visited_airports), wraplength="400", bg='#FFFFFF')
     airports_visited_label.pack(pady=20)
     distance_label = tk.Label(old_root, text="Your travel distance is roughly " + str(round(distance*5.545541)) + ' km',
                               wraplength="400", bg='#FFFFFF')
     distance_label.pack(pady=10)
-    if quit_button is True:
+    if create_btns is True:
+        new_trip_btn = tk.Button(old_root, text="New Trip", bg='#D3D3D3', command=lambda: rerun_program(old_root))
+        new_trip_btn.pack()
         quit_btn = tk.Button(old_root, text='Quit', bg='#D3D3D3', command=lambda: close_program(old_root))
         quit_btn.pack()
-
-    pass
+    return
 
 
 def compare(old_root, points, canvas):
     points_copied = deepcopy(points)
     greedy_points = greedy(points)
-    sectional_points2 = sectional(points_copied)
+    sectional_points = sectional(points_copied)
 
     draw_line(old_root, greedy_points, canvas, 'greedy')
-    draw_line(old_root, sectional_points2, canvas, 'sectional', "orange", "3", quit_button=True)
+    draw_line(old_root, sectional_points, canvas, 'sectional', "orange", "3", create_btns=True)
     pass
 
 
@@ -208,7 +211,14 @@ def close_program(new_root):
 def remove_buttons(button_list):
     for button in button_list:
         button.destroy()
-pass
+    pass
+
+
+def rerun_program(new_root):
+    close_program(new_root)
+    os.system("python TravellingSalesmanGUI.py")
+    exit()
+    pass
 
 
 desired_airports = []
