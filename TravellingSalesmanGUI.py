@@ -103,22 +103,21 @@ def airport_selected(airport, temp_canvas, r=7):
 def add_airports():
     # Adds a button for every single airport in the dictionary
     airport_root = tk.Tk()
-    airport_root.geometry('524x500')
     airport_root.config(bg="#ADD8E6")
     airport_root.wm_title("Add Airports")
-    n = 0
+    n = 1
     m = 0
     for airport in sorted(dictionary_of_cities.values()):
         btn = tk.Button(airport_root, text=airport[0], bg="#D3D3D3", command=lambda airport=airport: airport_selected
         (airport, canvas))
         btn.grid(row=n, column=m)
         n += 1
-        if n == 17 and m == 0:
-            m += 1
-            n = 0
+        if n == 18 and m == 0:
+            m += 2
+            n = 1
     done_btn = tk.Button(airport_root, text='Calculate Flight Path', bg='#D3D3D3', command=lambda:
                          algorithm_select(airport_root))
-    done_btn.place(relx=0.4, y=460)
+    done_btn.grid(row=0, column=1)
     pass
 
 
@@ -143,15 +142,14 @@ def algorithm_select(old_root):
     compare(new_root, desired_airports, canvas))
     compare_btn.pack()
 
-    quit_btn = tk.Button(new_root, text='Quit', bg='#D3D3D3', command=lambda: close_program(new_root))
-    quit_btn.pack()
+    global btn_list
+    btn_list = [greedy_btn, sectional_btn, compare_btn]
 
-    btn_list = [greedy_btn, sectional_btn, compare_btn, quit_btn]
     pass
 
 
-def draw_line(old_root, points, canvas, algorithm_type, color='red', thickness="5"):
-
+def draw_line(old_root, points, canvas, algorithm_type, color='red', thickness="5", quit_button=False):
+    remove_buttons(btn_list)
     distance = 0
     for i in range(len(points)):
         if i == len(points) - 1:  # Breaks out when final point is reached, it was already connected by prev. loop
@@ -166,12 +164,15 @@ def draw_line(old_root, points, canvas, algorithm_type, color='red', thickness="
         ordered_airports.append(dictionary_of_cities_by_locations[str(key)])
 
     airports_visited_label = tk.Label(old_root, text="Using the " + algorithm_type +
-                                                     " algorithm your destinations are:\n" +
+                                                     " algorithm your flight path is:\n" +
                                                      " to ".join(visited_airports), wraplength="400", bg='#FFFFFF')
     airports_visited_label.pack(pady=20)
-    distance_label = tk.Label(old_root, text="Your travel distance is roughly " + str(distance*5.545541) + ' km',
+    distance_label = tk.Label(old_root, text="Your travel distance is roughly " + str(round(distance*5.545541)) + ' km',
                               wraplength="400", bg='#FFFFFF')
     distance_label.pack(pady=10)
+    if quit_button is True:
+        quit_btn = tk.Button(old_root, text='Quit', bg='#D3D3D3', command=lambda: close_program(old_root))
+        quit_btn.pack()
 
     pass
 
@@ -182,7 +183,7 @@ def compare(old_root, points, canvas):
     sectional_points2 = sectional(points_copied)
 
     draw_line(old_root, greedy_points, canvas, 'greedy')
-    draw_line(old_root, sectional_points2, canvas, 'sectional', "orange", "3")
+    draw_line(old_root, sectional_points2, canvas, 'sectional', "orange", "3", quit_button=True)
     pass
 
 
@@ -204,9 +205,14 @@ def close_program(new_root):
     pass
 
 
+def remove_buttons(button_list):
+    for button in button_list:
+        button.destroy()
+pass
+
+
 desired_airports = []
 visited_airports = []
-
 # Creates the main window
 root = tk.Tk()
 root.wm_title("Trip Planner")
