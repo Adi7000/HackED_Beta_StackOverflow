@@ -1,12 +1,12 @@
 ----------------------------------
 Project Name: Flight Planner
-Description: This program is meant for the environmentally concious traveller. You can select multiple busy airports in the United States and this program will chart the most efficient flight path for you to minimize your carbon emmisions. This program analyses potential flight paths using a standard "greedy algorithm", and a specially crafted "sectional" algorithm.
+Description: This program is meant for the environmentally conscious traveller. You can select multiple busy airports in the United States and this program will chart the most efficient flight path for you to minimize your carbon emissions. This program analyses potential flight paths using a standard "greedy algorithm", and a specially crafted "sectional" algorithm.
 ----------------------------------
 Installation:
-	Put folder in a directory where it can access modules tkinter, PIL, math, os, greedy, copy, and image Map.png.
+	Put folder in a directory where it can access modules tkinter, PIL, math, os, greedy, copy, and image Map.png. Note PIL is not a standard library.
 
 Running Instructions:
-	1.a Ensure modules tkinter, PIL, math, os, greedy, and copy are accessable tp TravellingSalesmanGUI.py
+	1.a Ensure modules tkinter, PIL, math, os, greedy, and copy are accessible to TravellingSalesmanGUI.py
 	1.b Ensure "Map.png" is accessable to TravellingSalesmanGUI.py
 	2. Run 'TravellingSalesmanGUI.py' from the console.
 	3. You will see a map of the United States with the most visited airports marked on the map, denoted by their three letter identifier. Clicking "Plan Trip" allows you to select the airports you wish to visit.
