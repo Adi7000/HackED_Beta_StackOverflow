@@ -140,7 +140,7 @@ def algorithm_select(old_root):
     sectional_plot(new_root, desired_airports, canvas))
     sectional_btn.pack()
 
-    compare_btn = tk.Button(new_root, text='Compare both options', bg='#D3D3D3', command=lambda:
+    compare_btn = tk.Button(new_root, text='Compare Both Options', bg='#D3D3D3', command=lambda:
     compare(new_root, desired_airports, canvas))
     compare_btn.pack()
 
