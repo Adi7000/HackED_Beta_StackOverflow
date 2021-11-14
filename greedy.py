@@ -35,7 +35,7 @@ class section():
         else:
             return []
         
-def sectional(points, sep=5):
+def sectional(points, sep=100):
     startpoint = points[0]
     size = [max(i[0] for i in points), max(i[1] for i in points)]
     quadrants = [math.ceil(size[0]/sep)-1, math.ceil(size[1]/sep)-1]
@@ -141,17 +141,17 @@ def dist(p1, p2):
     return ((p2[0] - p1[0])**2 + (p2[1]- p1[1])**2)**(1/2)
     
 
-if __name__ == "__main__":
-    #points = [(0,0),(0,1),(0,2),(1,5),(2,1),(2,3),(5,5),(6,7),(8,8),(7,8),(6,7),(9,9),(8,7),(7,6),(5,6),(7,5)]
-    points = []
-    for i in range(10):
-        for j in range(10):
-            points.append((i,j))
-
-    path = sectional(points)
-    print(path)
-    print(len(path))
-    print(len(points))
+# if __name__ == "__main__":
+#     #points = [(0,0),(0,1),(0,2),(1,5),(2,1),(2,3),(5,5),(6,7),(8,8),(7,8),(6,7),(9,9),(8,7),(7,6),(5,6),(7,5)]
+#     points = []
+#     for i in range(10):
+#         for j in range(10):
+#             points.append((i,j))
+#
+#     path = sectional(points)
+#     print(path)
+#     print(len(path))
+#     print(len(points))
 
 
 
