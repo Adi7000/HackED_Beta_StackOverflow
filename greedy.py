@@ -33,7 +33,7 @@ class section():
                 lastP = self.points.pop(minid)
             return path
         else:
-            return None
+            return []
         
 def sectional(points, sep=5):
     startpoint = points[0]
@@ -84,16 +84,21 @@ def sectional(points, sep=5):
 
     # oscilate up and down while moving right (repeats wont affect as their points are emptied after use)
     a = 1
+
     while i < startquad[0]:
         if a == 1: # go up
             while j < quadrants[1]:
+                path += quads[(i,j)].greedy()
                 j += 1
                 path += quads[(i,j)].greedy()
+                
             a = -1
         elif a == -1: # go down
-            while j > 1:
+            while j > 0:
+                path += quads[(i,j)].greedy()
                 j -= 1
                 path += quads[(i,j)].greedy() 
+                
             a = 1
                 
         i += 1
@@ -103,11 +108,13 @@ def sectional(points, sep=5):
         while j >= 0:
             if b == 1:   # go right
                 while i < quadrants[0]:
+                    path += quads[(i,j)].greedy()
                     i += 1
                     path += quads[(i,j)].greedy()
                 b = -1
             elif b == -1: # go left
                 while i > startquad[0]:
+                    path += quads[(i,j)].greedy()
                     i -= 1
                     path += quads[(i,j)].greedy()
                 b = 1
@@ -117,11 +124,13 @@ def sectional(points, sep=5):
         while j <= quadrants[1]:
             if b == 1:   # go right
                 while i < quadrants[0]:
+                    path += quads[(i,j)].greedy()
                     i += 1
                     path += quads[(i,j)].greedy()
                 b = -1
             elif b == -1: # go left
                 while i > startquad[0]:
+                    path += quads[(i,j)].greedy()
                     i -= 1
                     path += quads[(i,j)].greedy()
                 b = 1
@@ -133,7 +142,12 @@ def dist(p1, p2):
     
 
 if __name__ == "__main__":
-    points = [(0,0),(0,1),(0,2),(1,5),(2,1),(2,3),(5,5),(6,7),(8,8),(7,8),(6,7),(9,9),(8,7),(7,6),(5,6),(7,5)]
+    #points = [(0,0),(0,1),(0,2),(1,5),(2,1),(2,3),(5,5),(6,7),(8,8),(7,8),(6,7),(9,9),(8,7),(7,6),(5,6),(7,5)]
+    points = []
+    for i in range(10):
+        for j in range(10):
+            points.append((i,j))
+
     path = sectional(points)
     print(path)
     print(len(path))
