@@ -145,10 +145,13 @@ def algorithm_select(old_root):
 
     quit_btn = tk.Button(new_root, text='Quit', bg='#D3D3D3', command=lambda: close_program(new_root))
     quit_btn.pack()
+
+    btn_list = [greedy_btn, sectional_btn, compare_btn, quit_btn]
     pass
 
 
-def draw_line(old_root, points, canvas, color='red', thickness="5"):
+def draw_line(old_root, points, canvas, algorithm_type, color='red', thickness="5"):
+
     distance = 0
     for i in range(len(points)):
         if i == len(points) - 1:  # Breaks out when final point is reached, it was already connected by prev. loop
@@ -162,12 +165,13 @@ def draw_line(old_root, points, canvas, color='red', thickness="5"):
     for key in points:
         ordered_airports.append(dictionary_of_cities_by_locations[str(key)])
 
-    airports_visited_label = tk.Label(old_root, text="Your destinations are:\n" + " to ".join(visited_airports),
-                                      wraplength="400", bg='#ADD8E6')
+    airports_visited_label = tk.Label(old_root, text="Using the " + algorithm_type +
+                                                     " algorithm your destinations are:\n" +
+                                                     " to ".join(visited_airports), wraplength="400", bg='#FFFFFF')
     airports_visited_label.pack(pady=20)
     distance_label = tk.Label(old_root, text="Your travel distance is roughly " + str(distance*5.545541) + ' km',
-                              wraplength="400", bg='#ADD8E6')
-    distance_label.pack(pady=20)
+                              wraplength="400", bg='#FFFFFF')
+    distance_label.pack(pady=10)
 
     pass
 
@@ -177,20 +181,20 @@ def compare(old_root, points, canvas):
     greedy_points = greedy(points)
     sectional_points2 = sectional(points_copied)
 
-    draw_line(old_root, greedy_points, canvas)
-    draw_line(old_root, sectional_points2, canvas, "orange", "3")
+    draw_line(old_root, greedy_points, canvas, 'greedy')
+    draw_line(old_root, sectional_points2, canvas, 'sectional', "orange", "3")
     pass
 
 
 def greedy_plot(root, points, canvas):
     ordered_points = greedy(points)
-    draw_line(root, ordered_points, canvas)
+    draw_line(root, ordered_points, canvas, 'greedy')
     pass
 
 
 def sectional_plot(root, points, canvas):
     ordered_points = sectional(points)
-    draw_line(root, ordered_points, canvas)
+    draw_line(root, ordered_points, canvas, 'sectional')
     pass
 
 
